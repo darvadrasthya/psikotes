@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 24 Apr 2020 pada 12.27
+-- Waktu pembuatan: 21 Jun 2023 pada 14.16
 -- Versi server: 10.3.16-MariaDB
 -- Versi PHP: 7.3.6
 
@@ -19,35 +19,8 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `ujikom`
+-- Database: `inova`
 --
-
--- --------------------------------------------------------
-
---
--- Struktur dari tabel `detail_order`
---
-
-CREATE TABLE `detail_order` (
-  `id_detail_order` int(50) NOT NULL,
-  `id_order` varchar(50) NOT NULL,
-  `id_masakan` varchar(50) NOT NULL,
-  `harga` varchar(100) NOT NULL,
-  `qty` varchar(50) NOT NULL,
-  `status_detail_order` enum('0','1') NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data untuk tabel `detail_order`
---
-
-INSERT INTO `detail_order` (`id_detail_order`, `id_order`, `id_masakan`, `harga`, `qty`, `status_detail_order`) VALUES
-(13, '', 'MSK0001', '20000', '2', '0'),
-(16, '', 'MSK0003', '10000', '2', '0'),
-(17, '', 'MSK0010', '7000', '1', '0'),
-(18, '', 'MSK0008', '9000', '2', '0'),
-(20, '', 'MSK0009', '1000', '1', '0'),
-(21, '', 'MSK0001', '20000', '4', '0');
 
 -- --------------------------------------------------------
 
@@ -75,70 +48,66 @@ INSERT INTO `level` (`id_level`, `nama_level`) VALUES
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `masakan`
+-- Struktur dari tabel `obat`
 --
 
-CREATE TABLE `masakan` (
-  `id_masakan` varchar(50) NOT NULL,
-  `nama_masakan` varchar(100) NOT NULL,
-  `harga` varchar(255) NOT NULL,
-  `status_masakan` enum('ready','sold') NOT NULL
+CREATE TABLE `obat` (
+  `id_obat` varchar(50) NOT NULL,
+  `nama_obat` varchar(50) NOT NULL,
+  `dosis` int(25) NOT NULL,
+  `qty` int(50) NOT NULL,
+  `indikasi` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `masakan`
+-- Dumping data untuk tabel `obat`
 --
 
-INSERT INTO `masakan` (`id_masakan`, `nama_masakan`, `harga`, `status_masakan`) VALUES
-('MSK0001', 'spageti', '20000', 'ready'),
-('MSK0002', 'burger', '20000', 'ready'),
-('MSK0003', 'ayam', '10000', 'ready'),
-('MSK0004', 'roti buaya', '100000', 'sold'),
-('MSK0005', 'aseton', '80000', 'ready'),
-('MSK0006', 'gulai', '25000', 'ready'),
-('MSK0007', 'rendang', '7000', 'ready'),
-('MSK0008', 'pakcoy', '9000', 'ready'),
-('MSK0009', 'opor', '1000', 'ready'),
-('MSK0010', 'sop kambing', '7000', 'ready'),
-('MSK0011', 'sop iga', '1000', 'ready'),
-('MSK0012', 'bakwan', '8000', 'ready'),
-('MSK0013', 'apawe', '90000', 'ready');
+INSERT INTO `obat` (`id_obat`, `nama_obat`, `dosis`, `qty`, `indikasi`) VALUES
+('OBT0001', 'Panadol', 50, 5, 'UNTUK HAREENG'),
+('OBT0002', 'Paramex', 10, 7, 'untuk panas tiriz');
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `order`
+-- Struktur dari tabel `pasien`
 --
 
-CREATE TABLE `order` (
-  `id_order` varchar(50) NOT NULL,
-  `no_meja` varchar(25) NOT NULL,
-  `tanggal` date NOT NULL,
-  `id_user` varchar(50) NOT NULL
+CREATE TABLE `pasien` (
+  `id_pasien` varchar(50) NOT NULL,
+  `nama_pasien` varchar(50) NOT NULL,
+  `keluhan` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `order`
+-- Dumping data untuk tabel `pasien`
 --
 
-INSERT INTO `order` (`id_order`, `no_meja`, `tanggal`, `id_user`) VALUES
-('ORD0001', 'M03', '2020-12-31', 'USR0001'),
-('ORD0002', 'M02', '2020-12-31', 'USR0002'),
-('ORD0003', 'M01', '2020-03-19', 'USR0002');
+INSERT INTO `pasien` (`id_pasien`, `nama_pasien`, `keluhan`) VALUES
+('PSN0001', 'Darva', 'Sakit kepala'),
+('PSN0002', 'didin', 'janghed');
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `transaksi`
+-- Struktur dari tabel `tindakan`
 --
 
-CREATE TABLE `transaksi` (
-  `id_transaksi` varchar(50) NOT NULL,
-  `id_user` varchar(50) NOT NULL,
-  `id_order` varchar(50) NOT NULL,
-  `tanggal` date NOT NULL,
-  `total_bayar` varchar(25) NOT NULL
+CREATE TABLE `tindakan` (
+  `id_tindakan` varchar(50) NOT NULL,
+  `bentuk_tindakan` varchar(50) NOT NULL,
+  `id_pasien` varchar(50) NOT NULL,
+  `id_obat` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data untuk tabel `tindakan`
+--
+
+INSERT INTO `tindakan` (`id_tindakan`, `bentuk_tindakan`, `id_pasien`, `id_obat`) VALUES
+('TND0001', 'pasien gejala hareeng', 'PSN0001', 'OBT0001'),
+('TND0002', 'ada aja', 'PSN0002', 'OBT0002'),
+('TND0003', 'dilarikan ke ugd', 'PSN0001', 'OBT0001');
 
 -- --------------------------------------------------------
 
@@ -173,50 +142,34 @@ INSERT INTO `user` (`id_user`, `username`, `password`, `id_level`, `nama_user`, 
 --
 
 --
--- Indeks untuk tabel `detail_order`
---
-ALTER TABLE `detail_order`
-  ADD PRIMARY KEY (`id_detail_order`);
-
---
 -- Indeks untuk tabel `level`
 --
 ALTER TABLE `level`
   ADD PRIMARY KEY (`id_level`);
 
 --
--- Indeks untuk tabel `masakan`
+-- Indeks untuk tabel `obat`
 --
-ALTER TABLE `masakan`
-  ADD PRIMARY KEY (`id_masakan`);
+ALTER TABLE `obat`
+  ADD PRIMARY KEY (`id_obat`);
 
 --
--- Indeks untuk tabel `order`
+-- Indeks untuk tabel `pasien`
 --
-ALTER TABLE `order`
-  ADD PRIMARY KEY (`id_order`);
+ALTER TABLE `pasien`
+  ADD PRIMARY KEY (`id_pasien`);
 
 --
--- Indeks untuk tabel `transaksi`
+-- Indeks untuk tabel `tindakan`
 --
-ALTER TABLE `transaksi`
-  ADD PRIMARY KEY (`id_transaksi`);
+ALTER TABLE `tindakan`
+  ADD PRIMARY KEY (`id_tindakan`);
 
 --
 -- Indeks untuk tabel `user`
 --
 ALTER TABLE `user`
   ADD PRIMARY KEY (`id_user`);
-
---
--- AUTO_INCREMENT untuk tabel yang dibuang
---
-
---
--- AUTO_INCREMENT untuk tabel `detail_order`
---
-ALTER TABLE `detail_order`
-  MODIFY `id_detail_order` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
